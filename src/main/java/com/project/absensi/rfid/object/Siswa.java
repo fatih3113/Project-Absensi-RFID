@@ -13,16 +13,16 @@ public class Siswa {
     private String uidRfid;
     private String nis;
     private String namaLengkap;
-    private String kelas;
+    private String program;
 
     public Siswa() {
     }
 
-    public Siswa(String uidRfid, String nis, String namaLengkap, String kelas) {
+    public Siswa(String uidRfid, String nis, String namaLengkap, String program) {
         this.uidRfid = uidRfid;
         this.nis = nis;
         this.namaLengkap = namaLengkap;
-        this.kelas = kelas;
+        this.program = program;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class Siswa {
                 "uidRfid=" + uidRfid + 
                 ", nis=" + nis + 
                 ", namaLengkap=" + namaLengkap + 
-                ", kelas=" + kelas + '}';
+                ", program=" + program + '}';
     }
 
     // Getter dan Setter
@@ -59,11 +59,11 @@ public class Siswa {
         this.namaLengkap = namaLengkap;
     }
 
-    public String getKelas() {
-        return kelas;
+    public String getProgram() {
+        return program;
     }
 
     public void setKelas(String kelas) {
-        this.kelas = kelas;
+        this.program = program;
     }
 }

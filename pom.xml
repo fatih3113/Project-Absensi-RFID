@@ -11,10 +11,19 @@
         <maven.compiler.target>22</maven.compiler.target>
         <exec.mainClass>com.project.absensi.rfid.ProjectAbsensiRFID</exec.mainClass>
     </properties>
+    
+    <!-- Depedensi mongodb-driver-sync-->
     <dependencies>
         <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        
+        <!-- Library BSON -->
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson</artifactId>
             <version>5.0.0</version>
         </dependency>
         <dependency>

@@ -13,10 +13,10 @@ import com.project.absensi.rfid.object.Siswa;
 public class MainApp {
     public static void main(String[] args) {
         // Membuat objek Siswa baru
-        Siswa siswa = new Siswa();
+        Siswa s = new Siswa();
         
         // Pengecekan tipe objek
-        if(siswa instanceof Siswa){
+        if(s instanceof Siswa){
             System.out.println("Objek adalah Siswa");
         } else {
             System.out.println("Bukan objek Siswa");
