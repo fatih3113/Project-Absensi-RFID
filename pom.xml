@@ -12,7 +12,7 @@
         <exec.mainClass>com.project.absensi.rfid.ProjectAbsensiRFID</exec.mainClass>
     </properties>
     
-    <!-- Depedensi mongodb-driver-sync-->
+    <!-- Depede  nsi mongodb-driver-sync-->
     <dependencies>
         <dependency>
             <groupId>org.mongodb</groupId>
@@ -26,6 +26,7 @@
             <artifactId>bson</artifactId>
             <version>5.0.0</version>
         </dependency>
+        
         <dependency>
             <groupId>com.fazecast</groupId>
             <artifactId>jSerialComm</artifactId>
