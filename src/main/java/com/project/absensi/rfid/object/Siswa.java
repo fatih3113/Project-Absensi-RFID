@@ -17,6 +17,7 @@ public class Siswa {
 
     public Siswa() {
     }
+    
 
     public Siswa(String uidRfid, String nis, String namaLengkap, String program) {
         this.uidRfid = uidRfid;
@@ -24,7 +25,8 @@ public class Siswa {
         this.namaLengkap = namaLengkap;
         this.program = program;
     }
-
+    
+// Menampilkan isi dari object siswa
     @Override
     public String toString() {
         return "Siswa{" + 
