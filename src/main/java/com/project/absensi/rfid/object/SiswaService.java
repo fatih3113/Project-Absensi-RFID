@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.project.absensi.rfid.object;
 
 import com.mongodb.client.model.Filters;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -20,22 +15,14 @@ import org.bson.conversions.Bson;
 
 /**
  * Service untuk menangani CRUD data Siswa ke MongoDB.
- * Disesuaikan dengan atribut: uidRfid, nis, namaLengkap, program.
- * 
- * @author ACER
  */
 public class SiswaService {
-    // Inisialisasi GenericDAO khusus untuk entitas Siswa
     private final GenericDAO<Siswa> siswaRepo;
     
     public SiswaService() {
-        // Menggunakan koleksi "siswa" di MongoDB
         this.siswaRepo = new GenericDAO<>("siswa", Siswa.class);
     }
     
-    /**
-     * 1. CREATE: Menyimpan data siswa baru
-     */
     public void tambahSiswa(Siswa siswaBaru) {
         siswaRepo.save(siswaBaru); 
     }
@@ -45,9 +32,6 @@ public class SiswaService {
         siswaRepo.save(siswaBaru);
     }
     
-    /**
-     * 2. READ (Console): Mengambil semua data untuk log sistem
-     */
     public void tampilkanDaftarSiswa() {
         List<Siswa> daftar = siswaRepo.findAll();
         System.out.println("--- Daftar Siswa ---");
@@ -57,88 +41,85 @@ public class SiswaService {
     }
     
     /**
-     * 2. READ (GUI): Menampilkan daftar siswa ke dalam panel UI dalam bentuk Card
+     * Menampilkan daftar siswa ke dalam panel UI dalam bentuk Card.
+     * Menggunakan "Program" sebagai label informasi.
      */
     public void tampilkanDaftarSiswa(JPanel panelTarget) {
         List<Siswa> daftarSiswa = siswaRepo.findAll();
 
+        // 1. Bersihkan panel lama
         panelTarget.removeAll();
-        panelTarget.setLayout(new BorderLayout()); 
-        panelTarget.setBackground(new Color(68, 114, 196)); 
-
-        // Grid 3 kolom untuk menampung card siswa
-        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 10, 10));
+        
+        // 2. Buat Grid untuk menampung card (3 kolom)
+        // Kita tidak mengubah layout panelTarget secara radikal agar tidak merusak JFrame utama
+        JPanel gridPanel = new JPanel(new GridLayout(0, 3, 15, 15));
         gridPanel.setOpaque(false); 
         gridPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); 
         
         for (Siswa s : daftarSiswa) {
-            // Card Panel (Box Orange)
-            JPanel cardPanel = new JPanel(new GridLayout(3, 1, 0, 10)); 
+            // Card Panel (Warna Orange)
+            JPanel cardPanel = new JPanel(new GridLayout(3, 1, 0, 5)); 
             cardPanel.setBackground(new Color(237, 125, 49)); 
             cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.DARK_GRAY, 1, true),
-                BorderFactory.createEmptyBorder(15, 15, 15, 15)
+                BorderFactory.createLineBorder(Color.WHITE, 1, true),
+                BorderFactory.createEmptyBorder(10, 10, 10, 10)
             ));
 
             JLabel lblNama = new JLabel("Nama: " + s.getNamaLengkap());
             lblNama.setForeground(Color.WHITE);
+            lblNama.setFont(new java.awt.Font("Tahoma", 1, 12));
             
-            // Menggunakan getProgram() sesuai class Siswa
+            // Menggunakan getProgram()
             JLabel lblProgram = new JLabel("Program: " + s.getProgram());
             lblProgram.setForeground(Color.WHITE);
             
-            JButton tombolEdit = new JButton("Detail");
-            tombolEdit.setBackground(Color.ORANGE); 
-            tombolEdit.addActionListener(new ActionListener() {
+            JButton tombolDetail = new JButton("Detail");
+            tombolDetail.setFocusPainted(false);
+            tombolDetail.setBackground(Color.WHITE);
+            tombolDetail.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(null, "NIS: " + s.getNis() + "\nNama: " + s.getNamaLengkap());
+                    // Dialog informasi detail menggunakan kata "Program"
+                    JOptionPane.showMessageDialog(null, 
+                        "UID RFID: " + s.getUidRfid() + 
+                        "\nNIS: " + s.getNis() + 
+                        "\nNama: " + s.getNamaLengkap() + 
+                        "\nProgram: " + s.getProgram());
                 }
             });
             
             cardPanel.add(lblNama);
             cardPanel.add(lblProgram);
-            cardPanel.add(tombolEdit);
+            cardPanel.add(tombolDetail);
 
             gridPanel.add(cardPanel);
         }
 
-        panelTarget.add(gridPanel, BorderLayout.NORTH);
+        // Tambahkan grid ke panel target
+        panelTarget.add(gridPanel);
 
+        // Paksa refresh UI agar tidak berantakan
         panelTarget.revalidate();
         panelTarget.repaint();
     }
 
-    /**
-     * 3. READ (One): Mencari satu siswa berdasarkan UID RFID
-     */
     public Siswa cariSiswaByRFID(String uid) {
         Bson filter = Filters.eq("uidRfid", uid);
         return siswaRepo.findOne(filter);
     }
 
-    /**
-     * 4. UPDATE: Memperbarui data program/jurusan siswa
-     */
     public void perbaruiProgram(String nis, String programBaru) {
         Bson filter = Filters.eq("nis", nis);
         Siswa siswa = siswaRepo.findOne(filter);
         
         if (siswa != null) {
-            // Karena di class Siswa method set-nya bernama setKelas namun mengisi program
-            // Kita gunakan setKelas agar sinkron dengan class model kamu
-            siswa.setKelas(programBaru); 
+            siswa.setProgram(programBaru); 
             siswaRepo.update(filter, siswa);
-            System.out.println("Data program siswa berhasil diperbarui.");
         }
     }
 
-    /**
-     * 5. DELETE: Menghapus siswa berdasarkan NIS
-     */
     public void hapusSiswa(String nis) {
         Bson filter = Filters.eq("nis", nis);
         siswaRepo.delete(filter);
-        System.out.println("Data siswa berhasil dihapus.");
     }
 }
