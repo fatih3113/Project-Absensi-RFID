@@ -122,14 +122,14 @@ public class HalamanDashboard extends javax.swing.JFrame {
 
         tbllaporanabsensi.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "UidRfid", "Nama Peserta Kursus", "Hari, Tanggal", "Jam", "Keterangan"
+                "UidRfid", "NIS", "Nama Peserta Kursus", "Hari, Tanggal", "Jam", "Keterangan"
             }
         ));
         jScrollPane1.setViewportView(tbllaporanabsensi);
