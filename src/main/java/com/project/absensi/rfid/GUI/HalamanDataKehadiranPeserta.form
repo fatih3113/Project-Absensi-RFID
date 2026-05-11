@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace pref="162" max="32767" attributes="0"/>
+              <EmptySpace pref="151" max="32767" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -323,11 +323,12 @@
         <Component class="javax.swing.JComboBox" name="jComboBox2">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Teknisi Komputer"/>
-                <StringItem index="1" value="Aplikasi Perkantoran"/>
-                <StringItem index="2" value="Desain 3D SkecthUp"/>
-                <StringItem index="3" value="Auto Cad"/>
+              <StringArray count="5">
+                <StringItem index="0" value="Silahkan Pilih Program"/>
+                <StringItem index="1" value="Teknisi Komputer"/>
+                <StringItem index="2" value="Aplikasi Perkantoran"/>
+                <StringItem index="3" value="Desain 3D SkecthUp"/>
+                <StringItem index="4" value="Auto Cad"/>
               </StringArray>
             </Property>
           </Properties>

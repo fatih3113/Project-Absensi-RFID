@@ -65,7 +65,7 @@ public class Siswa {
         return program;
     }
 
-    public void setProgram(String kelas) {
+    public void setProgram(String program) {
         this.program = program;
     }
 }

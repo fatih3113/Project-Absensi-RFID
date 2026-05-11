@@ -165,7 +165,7 @@ public class HalamanDataKehadiranPeserta extends javax.swing.JFrame {
 
         jLabel15.setText("Program");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Teknisi Komputer", "Aplikasi Perkantoran", "Desain 3D SkecthUp", "Auto Cad" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Silahkan Pilih Program", "Teknisi Komputer", "Aplikasi Perkantoran", "Desain 3D SkecthUp", "Auto Cad" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -304,7 +304,7 @@ public class HalamanDataKehadiranPeserta extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(162, Short.MAX_VALUE)
+                .addContainerGap(151, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -422,6 +422,6 @@ public class HalamanDataKehadiranPeserta extends javax.swing.JFrame {
     
     private void refreshData() {
         SiswaService s = new SiswaService();
-        s.tampilkanDaftarSiswa(jPanel10);
+        //s.tampilkanDaftarSiswa(jPanel10);
     }
 }
