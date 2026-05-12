@@ -5,7 +5,9 @@
 package com.project.absensi.rfid;
 
 import com.project.absensi.rfid.GUI.AdminPage;
+import com.project.absensi.rfid.GUI.HalamanDashboard;
 import com.project.absensi.rfid.GUI.HalamanDataKehadiranPeserta;
+import com.project.absensi.rfid.GUI.HalamanLoginAdmin;
 import java.awt.Frame;
 
 /**
@@ -41,6 +43,7 @@ public class MainApp extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.GridLayout(0, 2, 10, 10));
 
+        jButton1.setBackground(new java.awt.Color(51, 51, 255));
         jButton1.setText("Admin Page");
         jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -50,12 +53,24 @@ public class MainApp extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1);
 
-        jButton3.setText("jButton3");
+        jButton3.setBackground(new java.awt.Color(0, 255, 0));
+        jButton3.setText("Halaman Login Admin");
         jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton3);
 
-        jButton2.setText("jButton2");
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
+        jButton2.setText("Halaman Dashboard");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel1.add(jButton2);
 
         jButton4.setText("jButton4");
@@ -74,6 +89,21 @@ public class MainApp extends javax.swing.JFrame {
         admin.setVisible(true); 
         admin.setExtendedState(Frame.MAXIMIZED_BOTH); 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // Halaman Login Admin
+        
+        HalamanLoginAdmin admin = new HalamanLoginAdmin();
+        admin.setVisible(true); 
+        admin.setExtendedState(Frame.MAXIMIZED_BOTH); 
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // Halaman Dashboard      
+        HalamanDashboard admin = new HalamanDashboard();
+        admin.setVisible (true);
+        admin.setExtendedState(Frame.MAXIMIZED_BOTH); 
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments

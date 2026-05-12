@@ -99,6 +99,7 @@ public class SiswaService {
                 JPanel controlPanel = new JPanel(new GridLayout(1, 2, 10, 0));
                 controlPanel.setOpaque(false);
 
+                // Tombol Edit untuk di admin page 
                 JButton tombolEdit = new JButton("Edit");
                 tombolEdit.setBackground(Color.ORANGE);
                 tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -112,6 +113,7 @@ public class SiswaService {
                     AdminPage.btnSave.setEnabled(false);
                 });
 
+                // Tombol Delete/Hapus di admin page
                 JButton tombolDelete = new JButton("Delete");
                 tombolDelete.setBackground(Color.RED);
                 tombolDelete.setForeground(Color.WHITE);
@@ -156,6 +158,8 @@ public class SiswaService {
             panelTarget.revalidate();
             panelTarget.repaint();
 
+            
+            // Eror Hendling
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -200,6 +204,8 @@ public class SiswaService {
      *
      * @param nis NIS siswa yang akan dihapus
      */
+    
+    //Method Hapus Data Siswa
     public void hapusSiswa(String nis) {
         Bson filter = Filters.eq("nis", nis);
         DAO.delete(filter);

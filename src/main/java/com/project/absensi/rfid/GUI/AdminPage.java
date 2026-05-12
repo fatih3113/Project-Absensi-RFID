@@ -229,7 +229,8 @@ public class AdminPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-
+        
+        // Buat Button Save
         Siswa s = new Siswa();
         s.setUidRfid(txtUID.getText());
         s.setNis(txtSiswaNIS.getText());
@@ -246,6 +247,7 @@ public class AdminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRefreshActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // Buat Button Update
         Siswa s = new Siswa();
         s.setUidRfid(txtUID.getText());
         s.setNis(txtSiswaNIS.getText());
@@ -323,6 +325,7 @@ public class AdminPage extends javax.swing.JFrame {
     public static javax.swing.JTextField txtUID;
     // End of variables declaration//GEN-END:variables
 
+    
     // Method Tampil data
     public static void showData(String key) {
         SiswaService s = new SiswaService();
