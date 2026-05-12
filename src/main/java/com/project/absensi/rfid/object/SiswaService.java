@@ -17,6 +17,11 @@ import javax.swing.JPanel;
 import java.lang.reflect.Field;
 import org.bson.conversions.Bson;
 
+/**
+ *
+ * @author ACER
+ */
+
 public class SiswaService {
 
     private final GenericDAO<Siswa> DAO;
@@ -73,24 +78,26 @@ public class SiswaService {
 
         try {
             for (Siswa s : daftarSiswa) {
-                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 0, 0));
-                cardPanel.setBackground(new Color(237, 125, 49));
+                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+                cardPanel.setBackground(Color.WHITE);
                 cardPanel.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.MAGENTA, 1, true),
+                        BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
                         BorderFactory.createEmptyBorder(15, 15, 15, 15)
                 ));
 
-                JLabel lblNama = new JLabel("Nama: " + s.getNamaLengkap());
-                lblNama.setForeground(Color.WHITE);
+                JLabel lblNama = new JLabel(s.getNamaLengkap().toUpperCase());
+                lblNama.setFont(new java.awt.Font("Segoe UI", 1, 15));
+                lblNama.setForeground(new Color(44, 62, 80)); // Navy Dark
 
-                JLabel lblNis = new JLabel("NIS: " + s.getNis());
-                lblNis.setForeground(Color.WHITE);
+                JLabel lblNis = new JLabel("🆔 " + s.getNis());
+                lblNis.setForeground(new Color(127, 140, 141));
 
-                JLabel lblProgram = new JLabel("Program: " + s.getProgram());
-                lblProgram.setForeground(Color.WHITE);
+                JLabel lblProgram = new JLabel("🎓 " + s.getProgram());
+                lblProgram.setForeground(new Color(127, 140, 141));
 
-                JPanel controlPanel = new JPanel(new GridLayout(1, 2, 20, 15));
-                controlPanel.setBackground(new Color(237, 125, 49));
+                // Panel Tombol
+                JPanel controlPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+                controlPanel.setOpaque(false);
 
                 JButton tombolEdit = new JButton("Edit");
                 tombolEdit.setBackground(Color.ORANGE);
