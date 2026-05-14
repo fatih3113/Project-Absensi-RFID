@@ -37,8 +37,8 @@ public class SiswaService {
         DAO.save(siswaBaru);
     }
 
-    public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String program) {
-        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program);
+    public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String program, String nomorhp, int umur) {
+        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program, nomorhp, umur);
         DAO.save(siswaBaru);
     }
 
@@ -78,51 +78,75 @@ public class SiswaService {
 
         try {
             for (Siswa s : daftarSiswa) {
-                JPanel cardPanel = new JPanel(new GridLayout(4, 1, 5, 5));
+
+                JPanel cardPanel = new JPanel(new GridLayout(6, 1, 5, 5));
+
                 cardPanel.setBackground(Color.WHITE);
                 cardPanel.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
                         BorderFactory.createEmptyBorder(15, 15, 15, 15)
                 ));
 
+                // Nama
                 JLabel lblNama = new JLabel(s.getNamaLengkap().toUpperCase());
-                lblNama.setFont(new java.awt.Font("Segoe UI", 1, 15));
-                lblNama.setForeground(new Color(44, 62, 80)); // Navy Dark
+                lblNama.setFont(new java.awt.Font("Segoe UI", 1, 16));
+                lblNama.setForeground(new Color(44, 62, 80));
 
-                JLabel lblNis = new JLabel("🆔 " + s.getNis());
+                // NIS
+                JLabel lblNis = new JLabel("🆔 ID : " + s.getNis());
                 lblNis.setForeground(new Color(127, 140, 141));
 
-                JLabel lblProgram = new JLabel("🎓 " + s.getProgram());
+                // Program
+                JLabel lblProgram = new JLabel("🎓 Program : " + s.getProgram());
                 lblProgram.setForeground(new Color(127, 140, 141));
 
-                // Panel Tombol
+                // Nomor HP
+                JLabel lblHp = new JLabel("📞 HP : " + s.getNomorHp());
+                lblHp.setForeground(new Color(127, 140, 141));
+
+                // Umur
+                JLabel lblUmur = new JLabel("🎂 Umur : " + s.getUmur() + " Tahun");
+                lblUmur.setForeground(new Color(127, 140, 141));
+
+                // Panel tombol
                 JPanel controlPanel = new JPanel(new GridLayout(1, 2, 10, 0));
                 controlPanel.setOpaque(false);
 
-                // Tombol Edit untuk di admin page 
+                // Tombol Edit
                 JButton tombolEdit = new JButton("Edit");
                 tombolEdit.setBackground(Color.ORANGE);
                 tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
                 tombolEdit.addActionListener((ActionEvent e) -> {
+
                     AdminPage.txtUID.setText(s.getUidRfid());
                     AdminPage.txtSiswaNIS.setText(s.getNis());
                     AdminPage.txtSiswaNIS.setEnabled(false);
+
                     AdminPage.txtSiswaName.setText(s.getNamaLengkap());
+
                     AdminPage.txtSiswaProgram.setSelectedItem(s.getProgram());
+
                     AdminPage.btnUpdate.setEnabled(true);
                     AdminPage.btnSave.setEnabled(false);
                 });
 
-                // Tombol Delete/Hapus di admin page
+                // Tombol Delete
                 JButton tombolDelete = new JButton("Delete");
+
                 tombolDelete.setBackground(Color.RED);
                 tombolDelete.setForeground(Color.WHITE);
+
                 tombolDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
                 tombolDelete.addActionListener((ActionEvent e) -> {
+
                     Object[] options = {"Ya, Hapus", "Batal"};
+
                     int choice = JOptionPane.showOptionDialog(
                             null,
-                            "Apakah Anda ingin menghapus data " + s.getNamaLengkap() + "?",
+                            "Apakah Anda ingin menghapus data "
+                                    + s.getNamaLengkap() + "?",
                             "Konfirmasi Penghapusan",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
@@ -132,12 +156,15 @@ public class SiswaService {
                     );
 
                     switch (choice) {
+
                         case JOptionPane.YES_OPTION:
                             hapusSiswa(s.getNis());
                             break;
+
                         case JOptionPane.NO_OPTION:
                             System.out.println("User memilih: Batal");
                             break;
+
                         default:
                             break;
                     }
@@ -149,6 +176,8 @@ public class SiswaService {
                 cardPanel.add(lblNama);
                 cardPanel.add(lblNis);
                 cardPanel.add(lblProgram);
+                cardPanel.add(lblHp);
+                cardPanel.add(lblUmur);
                 cardPanel.add(controlPanel);
 
                 gridPanel.add(cardPanel);

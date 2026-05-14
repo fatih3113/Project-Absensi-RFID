@@ -8,35 +8,42 @@ package com.project.absensi.rfid.object;
  *
  * @author ACER
  */
+
 public class Siswa {
 
     private String uidRfid;
     private String nis;
     private String namaLengkap;
     private String program;
+    private String nomorHp;
+    private int umur;
 
     public Siswa() {
     }
-    
 
-    public Siswa(String uidRfid, String nis, String namaLengkap, String program) {
+    public Siswa(String uidRfid, String nis, String namaLengkap,
+            String program, String nomorHp, int umur) {
+
         this.uidRfid = uidRfid;
         this.nis = nis;
         this.namaLengkap = namaLengkap;
         this.program = program;
-    }
-    
-// Menampilkan isi dari object siswa
-    @Override
-    public String toString() {
-        return "Siswa{" + 
-                "uidRfid=" + uidRfid + 
-                ", nis=" + nis + 
-                ", namaLengkap=" + namaLengkap + 
-                ", program=" + program + '}';
+        this.nomorHp = nomorHp;
+        this.umur = umur;
     }
 
-    // Getter dan Setter
+    @Override
+    public String toString() {
+        return "Siswa{" +
+                "uidRfid=" + uidRfid +
+                ", nis=" + nis +
+                ", namaLengkap=" + namaLengkap +
+                ", program=" + program +
+                ", nomorHp=" + nomorHp +
+                ", umur=" + umur +
+                '}';
+    }
+
     public String getUidRfid() {
         return uidRfid;
     }
@@ -67,5 +74,21 @@ public class Siswa {
 
     public void setProgram(String program) {
         this.program = program;
+    }
+
+    public String getNomorHp() {
+        return nomorHp;
+    }
+
+    public void setNomorHp(String nomorHp) {
+        this.nomorHp = nomorHp;
+    }
+
+    public int getUmur() {
+        return umur;
+    }
+
+    public void setUmur(int umur) {
+        this.umur = umur;
     }
 }
