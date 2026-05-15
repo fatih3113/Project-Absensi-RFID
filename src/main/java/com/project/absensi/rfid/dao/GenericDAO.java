@@ -1,6 +1,7 @@
-package com.project.absensi.rfid.object;
+package com.project.absensi.rfid.dao;
 
 import com.mongodb.client.MongoCollection;
+import com.project.absensi.rfid.object.MongoManager;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;
 import java.util.List;

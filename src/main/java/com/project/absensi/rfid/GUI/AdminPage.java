@@ -5,7 +5,7 @@
 package com.project.absensi.rfid.GUI;
 
 import com.project.absensi.rfid.object.Siswa;
-import com.project.absensi.rfid.object.SiswaService;
+import com.project.absensi.rfid.service.SiswaService;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 
