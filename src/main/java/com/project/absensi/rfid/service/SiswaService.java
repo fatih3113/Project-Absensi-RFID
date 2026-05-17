@@ -50,6 +50,7 @@ public class SiswaService {
     public void tampilkanDaftarSiswa() {
         List<Siswa> daftar = DAO.findAll();
         System.out.println("--- Daftar Siswa ---");
+        
         for (Siswa s : daftar) {
             System.out.println(s.toString());
         }
@@ -61,16 +62,17 @@ public class SiswaService {
      * @param panelTarget Panel tujuan untuk menampilkan card siswa
      * @param key         Kata kunci pencarian; kosong = tampilkan semua
      */
+    
     public void tampilSiswa(JPanel panelTarget, String key) {
         List<Siswa> daftarSiswa;
 
-        if (key.isEmpty()) {
+        if (key.isEmpty()) { //kalau search kue kosong
             daftarSiswa = DAO.findAll();
         } else {
-            daftarSiswa = cariSiswa(key);
+            daftarSiswa = cariSiswa(key); // kalau ada ketword
         }
 
-        panelTarget.removeAll();
+        panelTarget.removeAll(); // menghapus p[anel lamansebelum di refresh
         panelTarget.setLayout(new BorderLayout());
         panelTarget.setBackground(new Color(68, 114, 196));
 
@@ -124,10 +126,10 @@ public class SiswaService {
                     AdminPage.txtUID.setText(s.getUidRfid());
                     AdminPage.txtSiswaNIS.setText(s.getNis());
                     AdminPage.txtSiswaNIS.setEnabled(false);
-
                     AdminPage.txtSiswaName.setText(s.getNamaLengkap());
-
                     AdminPage.txtSiswaProgram.setSelectedItem(s.getProgram());
+                    AdminPage.lblHp.setText(s.getNomorHp());
+                    AdminPage.lblUmur.setText(String.valueOf(s.getUmur()));
 
                     AdminPage.btnUpdate.setEnabled(true);
                     AdminPage.btnSave.setEnabled(false);

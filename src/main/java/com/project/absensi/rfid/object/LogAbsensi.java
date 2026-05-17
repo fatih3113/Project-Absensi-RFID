@@ -16,7 +16,7 @@ public class LogAbsensi {
     private String idLog;
     private String uidRfid;
     private LocalDateTime waktuTap;
-    private String status; // Misal: "Masuk", "Pulang", "Terlambat"
+    private String status; 
 
     public LogAbsensi() {
     }

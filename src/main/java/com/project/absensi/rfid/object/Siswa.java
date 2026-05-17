@@ -19,10 +19,10 @@ public class Siswa {
     private int umur;
 
     public Siswa() {
-    }
+    }//onstructor kosong agar bisa membuat object otomatis.
 
     public Siswa(String uidRfid, String nis, String namaLengkap,
-            String program, String nomorHp, int umur) {
+            String program, String nomorHp, int umur) { //membuatt objek siswaa sklaligus datanya
 
         this.uidRfid = uidRfid;
         this.nis = nis;
@@ -42,7 +42,7 @@ public class Siswa {
                 ", nomorHp=" + nomorHp +
                 ", umur=" + umur +
                 '}';
-    }
+    }// mengubah objek mnjadi teks
 
     public String getUidRfid() {
         return uidRfid;

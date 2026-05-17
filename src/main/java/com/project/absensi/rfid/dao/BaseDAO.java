@@ -3,7 +3,13 @@ package com.project.absensi.rfid.dao;
 import java.util.List;
 import org.bson.conversions.Bson;
 
+/**
+ *
+ * @author ACER
+ */
+
 public interface BaseDAO<T> {
+    
     // Operasi CRUD Dasar
     void save(T entity);
     void update(Bson filter, T entity);
