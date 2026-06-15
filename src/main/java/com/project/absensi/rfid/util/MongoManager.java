@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.project.absensi.rfid.object;
+package com.project.absensi.rfid.util;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
@@ -24,10 +24,11 @@ public class MongoManager {
     public static MongoDatabase getDatabase() {
 
             // 1. Konfigurasi CodecRegistry untuk pemetaan POJO otomatis (Standard Industry)
-            CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries(
+            CodecRegistry pojoCodecRegistry = CodecRegistries.fromRegistries( 
                 MongoClientSettings.getDefaultCodecRegistry(),
                 CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build())
-            );
+            );//mngubah objek java menjadi bson mongodb otomatis
+
             
             // 2. Terapkan registry tersebut ke pengaturan MongoClient
             MongoClientSettings settings = MongoClientSettings.builder()
@@ -38,7 +39,7 @@ public class MongoManager {
             
             // 3. Buat MongoClient dan Database menggunakan pengaturan tersebut
             mongoClient = MongoClients.create(settings);
-            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);
+            MongoDatabase database = mongoClient.getDatabase(DATABASE_NAME);//mengambil database absensi-rfid
             return database; 
     }   
 }

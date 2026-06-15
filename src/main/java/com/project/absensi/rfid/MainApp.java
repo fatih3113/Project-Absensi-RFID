@@ -7,7 +7,8 @@ package com.project.absensi.rfid;
 import com.project.absensi.rfid.GUI.AdminPage;
 import com.project.absensi.rfid.GUI.HalamanDashboard;
 import com.project.absensi.rfid.GUI.HalamanDataKehadiranPeserta;
-import com.project.absensi.rfid.GUI.HalamanLoginAdmin;
+import com.project.absensi.rfid.GUI.LoginPage;
+import com.project.absensi.rfid.service.SerialService;
 import java.awt.Frame;
 
 /**
@@ -20,8 +21,25 @@ public class MainApp extends javax.swing.JFrame {
      * Creates new form MainApp
      */
     public MainApp() {
-        initComponents();
+        // 1. Koneksi sekali saja saat aplikasi start
+        SerialService.getInstance().connect("COM3", 9600);
+
+        // 2. Tambahkan Global Observer (misal untuk Logging)
+        SerialService.getInstance().addHandler(tagId -> {
+            System.out.println("Global Log: Kartu " + tagId + " terdeteksi.");
+            // Jalankan fungsi database di sini
+        });
+        
+        // 3. Contoh update UI di MainFrame
+        SerialService.getInstance().addHandler(tagId -> {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                //lblStatus.setText("User Terakhir: " + tagId);
+            });
+        });
+        
+        initComponents();        
     }
+
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -85,7 +103,7 @@ public class MainApp extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // Halaman Login Admin        
-        HalamanLoginAdmin admin = new HalamanLoginAdmin();
+        LoginPage admin = new LoginPage();
         admin.setVisible(true); 
         admin.setExtendedState(Frame.MAXIMIZED_BOTH); 
     }//GEN-LAST:event_jButton3ActionPerformed

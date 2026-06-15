@@ -1,7 +1,7 @@
 package com.project.absensi.rfid.dao;
 
 import com.mongodb.client.MongoCollection;
-import com.project.absensi.rfid.object.MongoManager;
+import com.project.absensi.rfid.util.MongoManager;
 import org.bson.conversions.Bson;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Implementasi Generic DAO untuk MongoDB yang efisien dan reusable.
+ * untuk semua entity mengurangi duplikasi code 
  * @param <T>
  */
 public class GenericDAO<T> implements BaseDAO<T> { //implementasi CRUD MongoDB yang reusable

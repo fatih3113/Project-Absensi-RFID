@@ -6,9 +6,10 @@ import org.bson.conversions.Bson;
 /**
  *
  * @author ACER
+ * sebagai tempat dasar standar oprasi CRUD 
  */
 
-public interface BaseDAO<T> {
+public interface BaseDAO<T> { //<t> generic type parameter, ini bisa di gunakan di entitas mana saja 
     
     // Operasi CRUD Dasar
     void save(T entity);

@@ -1,9 +1,10 @@
 package com.project.absensi.rfid.service;
 
-import com.project.absensi.rfid.GUI.AdminPage;
+import com.project.absensi.rfid.GUI.panel.SiswaPanel;
 import com.mongodb.client.model.Filters;
 import com.project.absensi.rfid.dao.GenericDAO;
 import com.project.absensi.rfid.object.Siswa;
+import com.project.absensi.rfid.util.EncryptionUtils;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -26,11 +27,11 @@ import org.bson.conversions.Bson;
 
 public class SiswaService {
 
-    private final GenericDAO<Siswa> DAO;
+    private final GenericDAO<Siswa> DAO; //DAO khusus object Siswa.
 
     public SiswaService() {
-        this.DAO = new GenericDAO<>("siswa", Siswa.class);
-    }
+        this.DAO = new GenericDAO<>("siswa", Siswa.class);// generic hanya menjalankan object siswa doang
+    }// ini itu untuk buat Menghubungkan service ke coletion MongoDB yg nmnya siswa
 
     /**
      * 1. CREATE: Menyimpan data siswa baru ke MongoDB
@@ -38,9 +39,10 @@ public class SiswaService {
     public void tambahSiswa(Siswa siswaBaru) {
         DAO.save(siswaBaru);
     }
-
+    
+    //tambah siswa 
     public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String program, String nomorhp, int umur) {
-        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program, nomorhp, umur);
+        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program, nomorhp, umur); // instansiasi yang sudah ada datanya atau atribute
         DAO.save(siswaBaru);
     }
 
@@ -83,7 +85,7 @@ public class SiswaService {
         try {
             for (Siswa s : daftarSiswa) {
 
-                JPanel cardPanel = new JPanel(new GridLayout(6, 1, 5, 5));
+                JPanel cardPanel = new JPanel(new GridLayout(6, 1, 5, 5));// membuat kartu mahasiswa
 
                 cardPanel.setBackground(Color.WHITE);
                 cardPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -91,24 +93,24 @@ public class SiswaService {
                         BorderFactory.createEmptyBorder(15, 15, 15, 15)
                 ));
 
-                // Nama
+                // menampilkan Nama
                 JLabel lblNama = new JLabel(s.getNamaLengkap().toUpperCase());
                 lblNama.setFont(new java.awt.Font("Segoe UI", 1, 16));
                 lblNama.setForeground(new Color(44, 62, 80));
 
-                // NIS
-                JLabel lblNis = new JLabel("🆔 ID : " + s.getNis());
+                // menampilkan NIS
+                JLabel lblNis = new JLabel("🆔 ID : " + EncryptionUtils.decrypt (s.getNis()));
                 lblNis.setForeground(new Color(127, 140, 141));
 
-                // Program
+                // mnampilkan Program
                 JLabel lblProgram = new JLabel("🎓 Program : " + s.getProgram());
                 lblProgram.setForeground(new Color(127, 140, 141));
 
-                // Nomor HP
-                JLabel lblHp = new JLabel("📞 HP : " + s.getNomorHp());
+                //menampilakan Nomor HP
+                JLabel lblHp = new JLabel("📞 Nomor HP : " +  s.getNomorHp());
                 lblHp.setForeground(new Color(127, 140, 141));
 
-                // Umur
+                // manmpilkanUmur
                 JLabel lblUmur = new JLabel("🎂 Umur : " + s.getUmur() + " Tahun");
                 lblUmur.setForeground(new Color(127, 140, 141));
 
@@ -120,19 +122,20 @@ public class SiswaService {
                 JButton tombolEdit = new JButton("Edit");
                 tombolEdit.setBackground(Color.ORANGE);
                 tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+                
+                //Data siswa dimasukkan ke form AdminPage.
                 tombolEdit.addActionListener((ActionEvent e) -> {
 
-                    AdminPage.txtUID.setText(s.getUidRfid());
-                    AdminPage.txtSiswaNIS.setText(s.getNis());
-                    AdminPage.txtSiswaNIS.setEnabled(false);
-                    AdminPage.txtSiswaName.setText(s.getNamaLengkap());
-                    AdminPage.txtSiswaProgram.setSelectedItem(s.getProgram());
-                    AdminPage.lblHp.setText(s.getNomorHp());
-                    AdminPage.lblUmur.setText(String.valueOf(s.getUmur()));
+                    SiswaPanel.txtUID.setText(s.getUidRfid());
+                    SiswaPanel.txtSiswaNIS.setText(s.getNis());
+                    SiswaPanel.txtSiswaNIS.setEnabled(false);
+                    SiswaPanel.txtSiswaName.setText(s.getNamaLengkap());
+                    SiswaPanel.txtSiswaProgram.setSelectedItem(s.getProgram());
+                    SiswaPanel.lblHp.setText(s.getNomorHp());
+                    SiswaPanel.lblUmur.setText(String.valueOf(s.getUmur()));
 
-                    AdminPage.btnUpdate.setEnabled(true);
-                    AdminPage.btnSave.setEnabled(false);
+                    SiswaPanel.btnUpdate.setEnabled(true);
+                    SiswaPanel.btnSave.setEnabled(false);
                 });
 
                 // Tombol Delete
@@ -157,7 +160,7 @@ public class SiswaService {
                             null,
                             options,
                             options[0]
-                    );
+                    ); //menampilkan konfirmasi hapuss
 
                     switch (choice) {
 
@@ -207,14 +210,14 @@ public class SiswaService {
     public List<Siswa> cariSiswa(String key) {
         List<Bson> filters = new ArrayList<>();
 
-        for (Field field : Siswa.class.getDeclaredFields()) {
-            if (field.getName().equals("uidRfid")) {
+        for (Field field : Siswa.class.getDeclaredFields()) { //mengambil semua atributatau field dari clas siswa
+            if (field.getName().equals("uidRfid")) { //melewati pencarian pada field sensitif
                 continue;
             }
-            filters.add(Filters.regex(field.getName(), key, "i"));
+            filters.add(Filters.regex(field.getName(), key, "i")); // pencarian fleksibel besar kecilnya huruf tidak mempengaruhi pencarian
         }
 
-        return DAO.findMany(Filters.or(filters));
+        return DAO.findMany(Filters.or(filters)); //ini buat cari data jika salah satu field cokok
     }
 
     /**
@@ -223,13 +226,14 @@ public class SiswaService {
      * @param newS Objek Siswa dengan data terbaru
      */
     public void updateSiswa(Siswa newS) {
-        Bson filter = Filters.eq("nis", newS.getNis());
+        Bson filter = Filters.eq("nis", newS.getNis()); //mencari siswa berdasarkan nis
         Siswa s = DAO.findOne(filter);
         if (s != null) {
             DAO.update(filter, newS);
-            AdminPage.showData("");
+            SiswaPanel.showData("");
             JOptionPane.showMessageDialog(null, "Data siswa berhasil diperbarui!");
-        }
+            
+        }//menampilkan popup data berhasil di perbaharui 
     }
 
     /**
@@ -240,9 +244,9 @@ public class SiswaService {
     
     //Method Hapus Data Siswa
     public void hapusSiswa(String nis) {
-        Bson filter = Filters.eq("nis", nis);
+        Bson filter = Filters.eq("nis", nis); //filter.qr mengunci targert berdasarkkan nis
         DAO.delete(filter);
-        AdminPage.showData("");
+        SiswaPanel.showData(""); //showData() memastikan table antarmuka langsung terupdate(refreshh) saat data di backend di hapus
         JOptionPane.showMessageDialog(null, "Data siswa berhasil dihapus.");
     }
 }

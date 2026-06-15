@@ -5,6 +5,8 @@
 
 package com.project.absensi.rfid.GUI;
 
+import com.project.absensi.rfid.MainApp;
+
 /**
  *
  * @author Dzakwan Unlimited
@@ -43,6 +45,7 @@ public class HalamanDashboard extends javax.swing.JFrame {
         jDateChooser3 = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
         btnlihat = new javax.swing.JButton();
+        btnlihat1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -168,6 +171,16 @@ public class HalamanDashboard extends javax.swing.JFrame {
         btnlihat.setForeground(new java.awt.Color(255, 255, 255));
         btnlihat.setText("Lihat");
 
+        btnlihat1.setBackground(new java.awt.Color(51, 51, 255));
+        btnlihat1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnlihat1.setForeground(new java.awt.Color(255, 255, 255));
+        btnlihat1.setText("Kembali");
+        btnlihat1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnlihat1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -194,14 +207,16 @@ public class HalamanDashboard extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap())
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnlihat))
-                                .addGap(358, 358, 358))))))
+                                .addGap(358, 358, 358))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnlihat1))
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +236,9 @@ public class HalamanDashboard extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addComponent(btnlihat, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(46, 46, 46)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnlihat1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         pack();
@@ -257,6 +274,11 @@ public class HalamanDashboard extends javax.swing.JFrame {
 //        this.dispose();
     }//GEN-LAST:event_jLabel7MouseClicked
 
+    private void btnlihat1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlihat1ActionPerformed
+        new MainApp().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnlihat1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -284,6 +306,7 @@ public class HalamanDashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnlihat;
+    private javax.swing.JButton btnlihat1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser3;
     private javax.swing.JLabel jLabel1;
