@@ -24,57 +24,56 @@ import org.bson.conversions.Bson;
  *
  * @author ACER
  */
-
 public class SiswaService {
 
     private final GenericDAO<Siswa> DAO; //DAO khusus object Siswa.
 
     public SiswaService() {
-        this.DAO = new GenericDAO<>("siswa", Siswa.class);// generic hanya menjalankan object siswa doang
-    }// ini itu untuk buat Menghubungkan service ke coletion MongoDB yg nmnya siswa
+        this.DAO = new GenericDAO<>("siswa", Siswa.class); // Menghubungkan service ke collection MongoDB bernama siswa
+    }
 
     /**
-     * 1. CREATE: Menyimpan data siswa baru ke MongoDB
+     * 1. CREATE: Menyimpan data siswa baru ke MongoDB menggunakan Object
      */
     public void tambahSiswa(Siswa siswaBaru) {
         DAO.save(siswaBaru);
     }
     
-    //tambah siswa 
-    public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String program, String nomorhp, int umur) {
-        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program, nomorhp, umur); // instansiasi yang sudah ada datanya atau atribute
+    /**
+     * 1. CREATE: Menyimpan data siswa baru menggunakan Parameter Langsung
+     */
+    public void tambahSiswa(String uidRfid, String nis, String namaLengkap, String program, String nomorhp, String foto, int umur) {
+        Siswa siswaBaru = new Siswa(uidRfid, nis, namaLengkap, program, nomorhp, foto, umur);
         DAO.save(siswaBaru);
     }
 
     /**
-     * 2. READ (All): Menampilkan semua data siswa ke console
+     * 2. READ (Console): Menampilkan semua data siswa ke console/system out
      */
     public void tampilkanDaftarSiswa() {
         List<Siswa> daftar = DAO.findAll();
         System.out.println("--- Daftar Siswa ---");
-        
         for (Siswa s : daftar) {
             System.out.println(s.toString());
         }
     }
 
     /**
-     * 2. READ (All/Search): Menampilkan data siswa ke panel GUI
+     * 2. READ (GUI Card View): Menampilkan data siswa ke panel GUI berbentuk Kartu
      *
-     * @param panelTarget Panel tujuan untuk menampilkan card siswa
+     * @param panelTarget Panel tujuan untuk menampilkan card siswa (jPanel4)
      * @param key         Kata kunci pencarian; kosong = tampilkan semua
      */
-    
     public void tampilSiswa(JPanel panelTarget, String key) {
         List<Siswa> daftarSiswa;
 
-        if (key.isEmpty()) { //kalau search kue kosong
+        if (key.isEmpty()) { 
             daftarSiswa = DAO.findAll();
         } else {
-            daftarSiswa = cariSiswa(key); // kalau ada ketword
+            daftarSiswa = cariSiswa(key); 
         }
 
-        panelTarget.removeAll(); // menghapus p[anel lamansebelum di refresh
+        panelTarget.removeAll(); // Menghapus isi panel lama sebelum di-refresh
         panelTarget.setLayout(new BorderLayout());
         panelTarget.setBackground(new Color(68, 114, 196));
 
@@ -85,36 +84,63 @@ public class SiswaService {
         try {
             for (Siswa s : daftarSiswa) {
 
-                JPanel cardPanel = new JPanel(new GridLayout(6, 1, 5, 5));// membuat kartu mahasiswa
-
+                // MEMBUAT KARTU MAHASISWA (Diset 7 baris untuk menampung komponen Foto + Info + Tombol)
+                JPanel cardPanel = new JPanel(new GridLayout(7, 1, 5, 5));
                 cardPanel.setBackground(Color.WHITE);
                 cardPanel.setBorder(BorderFactory.createCompoundBorder(
                         BorderFactory.createLineBorder(new Color(220, 220, 220), 1, true),
                         BorderFactory.createEmptyBorder(15, 15, 15, 15)
                 ));
 
-                // menampilkan Nama
+                // =============================================================
+                // KOMPONEN 1: RENDER FOTO SISWA DARI PATH/LOKASI COMPUTER
+                // =============================================================
+                JLabel lblFotoSiswa = new JLabel();
+                lblFotoSiswa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                
+                if (s.getFoto() != null && !s.getFoto().isEmpty()) {
+                    try {
+                        java.io.File fileFoto = new java.io.File(s.getFoto());
+                        if (fileFoto.exists()) {
+                            // Baca file gambar asli dan scale ukurannya menjadi proporsional kotak (misal: 60x60)
+                            java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(fileFoto);
+                            java.awt.Image resizedImg = img.getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH);
+                            lblFotoSiswa.setIcon(new javax.swing.ImageIcon(resizedImg));
+                            lblFotoSiswa.setText(""); // Hapus teks jika gambar berhasil di-load
+                        } else {
+                            lblFotoSiswa.setText("📷 (Foto tidak ditemukan)");
+                            lblFotoSiswa.setForeground(Color.RED);
+                        }
+                    } catch (Exception e) {
+                        lblFotoSiswa.setText("📷 (Gagal memuat foto)");
+                    }
+                } else {
+                    lblFotoSiswa.setText("👤 (Tidak ada foto)");
+                    lblFotoSiswa.setForeground(Color.GRAY);
+                }
+
+                // KOMPONEN 2: Menampilkan Nama
                 JLabel lblNama = new JLabel(s.getNamaLengkap().toUpperCase());
                 lblNama.setFont(new java.awt.Font("Segoe UI", 1, 16));
                 lblNama.setForeground(new Color(44, 62, 80));
 
-                // menampilkan NIS
-                JLabel lblNis = new JLabel("🆔 ID : " + EncryptionUtils.decrypt (s.getNis()));
+                // KOMPONEN 3: Menampilkan ID / NIS (Sudah didekrip)
+                JLabel lblNis = new JLabel("🆔 ID : " + EncryptionUtils.decrypt(s.getNis()));
                 lblNis.setForeground(new Color(127, 140, 141));
 
-                // mnampilkan Program
+                // KOMPONEN 4: Menampilkan Program Kelas
                 JLabel lblProgram = new JLabel("🎓 Program : " + s.getProgram());
                 lblProgram.setForeground(new Color(127, 140, 141));
 
-                //menampilakan Nomor HP
-                JLabel lblHp = new JLabel("📞 Nomor HP : " +  s.getNomorHp());
-                lblHp.setForeground(new Color(127, 140, 141));
+                // KOMPONEN 5: Menampilkan Nomor HP
+                JLabel lblHpText = new JLabel("📞 Nomor HP : " + s.getNomorHp());
+                lblHpText.setForeground(new Color(127, 140, 141));
+                
+                // KOMPONEN 6: Menampilkan Umur
+                JLabel lblUmurText = new JLabel("🎂 Umur : " + s.getUmur() + " Tahun");
+                lblUmurText.setForeground(new Color(127, 140, 141));
 
-                // manmpilkanUmur
-                JLabel lblUmur = new JLabel("🎂 Umur : " + s.getUmur() + " Tahun");
-                lblUmur.setForeground(new Color(127, 140, 141));
-
-                // Panel tombol
+                // KOMPONEN 7: Panel Tombol Aksi (Edit & Delete)
                 JPanel controlPanel = new JPanel(new GridLayout(1, 2, 10, 0));
                 controlPanel.setOpaque(false);
 
@@ -123,55 +149,46 @@ public class SiswaService {
                 tombolEdit.setBackground(Color.ORANGE);
                 tombolEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 
-                //Data siswa dimasukkan ke form AdminPage.
+                // Menaruh kembali data kartu ke Form Input ketika tombol edit ditekan
                 tombolEdit.addActionListener((ActionEvent e) -> {
-
                     SiswaPanel.txtUID.setText(s.getUidRfid());
-                    SiswaPanel.txtSiswaNIS.setText(s.getNis());
+                    SiswaPanel.txtSiswaNIS.setText(EncryptionUtils.decrypt(s.getNis())); // Dekrip NIS saat diedit
                     SiswaPanel.txtSiswaNIS.setEnabled(false);
                     SiswaPanel.txtSiswaName.setText(s.getNamaLengkap());
                     SiswaPanel.txtSiswaProgram.setSelectedItem(s.getProgram());
                     SiswaPanel.lblHp.setText(s.getNomorHp());
                     SiswaPanel.lblUmur.setText(String.valueOf(s.getUmur()));
 
+                    // Mengaktifkan status tombol kontrol di form utama
                     SiswaPanel.btnUpdate.setEnabled(true);
                     SiswaPanel.btnSave.setEnabled(false);
                 });
 
                 // Tombol Delete
                 JButton tombolDelete = new JButton("Delete");
-
                 tombolDelete.setBackground(Color.RED);
                 tombolDelete.setForeground(Color.WHITE);
-
                 tombolDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
                 tombolDelete.addActionListener((ActionEvent e) -> {
-
                     Object[] options = {"Ya, Hapus", "Batal"};
-
                     int choice = JOptionPane.showOptionDialog(
                             null,
-                            "Apakah Anda ingin menghapus data "
-                                    + s.getNamaLengkap() + "?",
+                            "Apakah Anda ingin menghapus data " + s.getNamaLengkap() + "?",
                             "Konfirmasi Penghapusan",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.QUESTION_MESSAGE,
                             null,
                             options,
                             options[0]
-                    ); //menampilkan konfirmasi hapuss
+                    );
 
                     switch (choice) {
-
                         case JOptionPane.YES_OPTION:
                             hapusSiswa(s.getNis());
                             break;
-
                         case JOptionPane.NO_OPTION:
                             System.out.println("User memilih: Batal");
                             break;
-
                         default:
                             break;
                     }
@@ -180,12 +197,14 @@ public class SiswaService {
                 controlPanel.add(tombolEdit);
                 controlPanel.add(tombolDelete);
 
-                cardPanel.add(lblNama);
-                cardPanel.add(lblNis);
-                cardPanel.add(lblProgram);
-                cardPanel.add(lblHp);
-                cardPanel.add(lblUmur);
-                cardPanel.add(controlPanel);
+                // MENYUSUN KOMPONEN MASUK KE KARTU SISWA (Urutan Vertikal)
+                cardPanel.add(lblFotoSiswa); // Baris 1 (Paling Atas)
+                cardPanel.add(lblNama);      // Baris 2
+                cardPanel.add(lblNis);       // Baris 3
+                cardPanel.add(lblProgram);   // Baris 4
+                cardPanel.add(lblHpText);    // Baris 5
+                cardPanel.add(lblUmurText);  // Baris 6
+                cardPanel.add(controlPanel); // Baris 7 (Paling Bawah)
 
                 gridPanel.add(cardPanel);
             }
@@ -194,59 +213,45 @@ public class SiswaService {
             panelTarget.revalidate();
             panelTarget.repaint();
 
-            
-            // Eror Hendling
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * 3. READ (Search): Mencari siswa berdasarkan kata kunci
-     *
-     * @param key Kata kunci pencarian
-     * @return List siswa yang cocok
+     * 3. READ (Search): Mencari siswa berdasarkan kata kunci fleksibel (Regex)
      */
     public List<Siswa> cariSiswa(String key) {
         List<Bson> filters = new ArrayList<>();
-
-        for (Field field : Siswa.class.getDeclaredFields()) { //mengambil semua atributatau field dari clas siswa
-            if (field.getName().equals("uidRfid")) { //melewati pencarian pada field sensitif
-                continue;
+        for (Field field : Siswa.class.getDeclaredFields()) { 
+            if (field.getName().equals("uidRfid") || field.getName().equals("foto")) { 
+                continue; // Melewati pencarian pada field sensitif dan file path gambar
             }
-            filters.add(Filters.regex(field.getName(), key, "i")); // pencarian fleksibel besar kecilnya huruf tidak mempengaruhi pencarian
+            filters.add(Filters.regex(field.getName(), key, "i")); 
         }
-
-        return DAO.findMany(Filters.or(filters)); //ini buat cari data jika salah satu field cokok
+        return DAO.findMany(Filters.or(filters)); 
     }
 
     /**
-     * 4. UPDATE: Memperbarui data siswa
-     *
-     * @param newS Objek Siswa dengan data terbaru
+     * 4. UPDATE: Memperbarui data siswa di MongoDB
      */
     public void updateSiswa(Siswa newS) {
-        Bson filter = Filters.eq("nis", newS.getNis()); //mencari siswa berdasarkan nis
+        Bson filter = Filters.eq("nis", newS.getNis()); 
         Siswa s = DAO.findOne(filter);
         if (s != null) {
             DAO.update(filter, newS);
-            SiswaPanel.showData("");
+            SiswaPanel.showData(""); // Me-refresh UI visual panel
             JOptionPane.showMessageDialog(null, "Data siswa berhasil diperbarui!");
-            
-        }//menampilkan popup data berhasil di perbaharui 
+        }
     }
 
     /**
      * 5. DELETE: Menghapus data siswa berdasarkan NIS
-     *
-     * @param nis NIS siswa yang akan dihapus
      */
-    
-    //Method Hapus Data Siswa
     public void hapusSiswa(String nis) {
-        Bson filter = Filters.eq("nis", nis); //filter.qr mengunci targert berdasarkkan nis
+        Bson filter = Filters.eq("nis", nis); 
         DAO.delete(filter);
-        SiswaPanel.showData(""); //showData() memastikan table antarmuka langsung terupdate(refreshh) saat data di backend di hapus
+        SiswaPanel.showData(""); // Memastikan table/card antarmuka langsung otomatis ter-refresh
         JOptionPane.showMessageDialog(null, "Data siswa berhasil dihapus.");
     }
 }

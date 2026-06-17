@@ -70,6 +70,8 @@ public class SiswaPanel extends javax.swing.JFrame {
         jPanel12 = new javax.swing.JPanel();
         txtSiswaName = new javax.swing.JTextField();
         btnKembali = new javax.swing.JButton();
+        btnFoto = new javax.swing.JButton();
+        lblFoto = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel4 = new javax.swing.JPanel();
 
@@ -328,6 +330,15 @@ public class SiswaPanel extends javax.swing.JFrame {
             }
         });
 
+        btnFoto.setText("Pilih foto");
+        btnFoto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFotoActionPerformed(evt);
+            }
+        });
+
+        lblFoto.setText("Masukan foto");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -364,9 +375,14 @@ public class SiswaPanel extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(137, 137, 137)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(btnFoto)
+                                    .addComponent(lblFoto)))
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 498, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 283, Short.MAX_VALUE)
                         .addComponent(jLabel7))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(93, 93, 93)
@@ -421,12 +437,18 @@ public class SiswaPanel extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(lblFoto)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(btnFoto)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnKembali)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -454,24 +476,30 @@ public class SiswaPanel extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+
         try {
             Siswa s = new Siswa();
-                // 1. Mengamankan UID menggunakan Hash SHA-256 bawaan dari SecurityUtils Anda
+            // 1. Mengamankan UID menggunakan Hash SHA-256
             s.setUidRfid(SecurityUtils.getHash(txtUID.getText(), SecurityUtils.SHA_256));
 
-                // 2. MEMPROSES ENKRIPSI PADA NIS (ID SISWA) SEBELUM MASUK KE MONGODB
+            // 2. Memproses enkripsi pada NIS
             String encryptedNis = com.project.absensi.rfid.util.EncryptionUtils.encrypt(txtSiswaNIS.getText());
             s.setNis(encryptedNis);
-            
-                // 3. Set data sisanya seperti biasa
+
+            // 3. Set data siswa
             s.setNamaLengkap(txtSiswaName.getText());
             s.setProgram(txtSiswaProgram.getSelectedItem().toString());
-            s.setNomorHp(lblHp.getText());
+
+            // PASTIKAN: txtSiswaHP adalah JTextField/JLabel tempat menginput NOMOR HP asli siswa, bukan foto
+            s.setNomorHp(lblHp.getText()); 
+
+            // Panggil setter foto baru yang sudah diperbaiki
+            s.setFoto(this.pathFotoTerpilih); 
 
             SiswaService service = new SiswaService();
             service.tambahSiswa(s);
 
-                // Pop-up notifikasi sukses
+            // Pop-up notifikasi sukses
             JOptionPane.showMessageDialog(
                 null,
                 "Data berhasil disimpan!",
@@ -479,7 +507,7 @@ public class SiswaPanel extends javax.swing.JFrame {
                 JOptionPane.INFORMATION_MESSAGE
             );
 
-                // Bersihkan form inputan setelah data masuk
+            // Bersihkan form inputan setelah data masuk
             refresAll();
 
         } catch (Exception e) {
@@ -553,6 +581,32 @@ public class SiswaPanel extends javax.swing.JFrame {
         com.project.absensi.rfid.GUI.AdminPage.appContentPane.repaint();
     }//GEN-LAST:event_btnKembaliActionPerformed
 
+    private void btnFotoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFotoActionPerformed
+                                           
+    javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+    javax.swing.filechooser.FileNameExtensionFilter filter = 
+            new javax.swing.filechooser.FileNameExtensionFilter("Gambar (JPG, PNG)", "jpg", "jpeg", "png");
+    fileChooser.setFileFilter(filter);
+    
+    int returnVal = fileChooser.showOpenDialog(this);
+    if (returnVal == javax.swing.JFileChooser.APPROVE_OPTION) {
+        java.io.File file = fileChooser.getSelectedFile();
+        
+        // PENTING: Simpan lokasi file ke variabel global
+        this.pathFotoTerpilih = file.getAbsolutePath(); 
+        
+        try {
+            // Tampilkan pratinjau ke label Anda (misal nama labelnya: lblFotoInput)
+            java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(file);
+            java.awt.Image resizedImg = img.getScaledInstance(lblFoto.getWidth(), lblFoto.getHeight(), java.awt.Image.SCALE_SMOOTH);
+            lblFoto.setIcon(new javax.swing.ImageIcon(resizedImg));
+            lblFoto.setText(""); // Hapus teks "Masukan foto" jika ada
+        } catch (Exception ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Gagal memuat gambar: " + ex.getMessage());
+        }
+    }
+    }//GEN-LAST:event_btnFotoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -590,6 +644,7 @@ public class SiswaPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFoto;
     private javax.swing.JButton btnKembali;
     private javax.swing.JButton btnRefresh;
     public static javax.swing.JButton btnSave;
@@ -613,6 +668,7 @@ public class SiswaPanel extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lblFoto;
     public static javax.swing.JTextField lblHp;
     public static javax.swing.JTextField lblUmur;
     private javax.swing.JTextField txtCari;
@@ -621,7 +677,12 @@ public class SiswaPanel extends javax.swing.JFrame {
     public static javax.swing.JComboBox<String> txtSiswaProgram;
     public static javax.swing.JTextField txtUID;
     // End of variables declaration//GEN-END:variables
-    // Method Tampil data
+    
+    // Letakkan di dalam class SiswaPanel, di bagian atas
+    private String pathFotoTerpilih = "";
+
+
+// Method Tampil data
         public static void showData(String key) {
             SiswaService s = new SiswaService();
             // Pastikan modifier jPanel4 di properties NetBeans sudah diset ke: public static
@@ -632,27 +693,22 @@ public class SiswaPanel extends javax.swing.JFrame {
         }
 
         // Method Refresh Semua data
-        private void refresAll() {
-
-            // Memuat ulang data siswa dari database tanpa filter keyword
-            showData("");
-
-            // Mengosongkan form input teks
+        public void refresAll() {
+            // 1. Bersihkan textfield inputan Anda
             txtUID.setText("");
             txtSiswaNIS.setText("");
             txtSiswaName.setText("");
             txtSiswaProgram.setSelectedIndex(0);
-
-            // PENYESUAIAN: Mengosongkan field HP dan Umur (Ganti ke txt jika itu JTextField)
             lblHp.setText("");
-            lblUmur.setText("");
 
-            // Mengembalikan keadaan tombol dan hak akses input
-            txtSiswaNIS.setEnabled(true);
-            btnSave.setEnabled(true);
-            btnUpdate.setEnabled(false);
+            // 2. Bersihkan inputan foto yang tadi kita buat
+            this.pathFotoTerpilih = "";
+            lblFoto.setIcon(null);
+            lblFoto.setText("Masukan foto");
 
-            // Mengarahkan kursor otomatis fokus kembali ke input UID RFID
-            txtUID.requestFocus();
+            // 3. REFRESH CARD VIEW-NYA DISINI
+            // Masukkan objek 'service' dan 'panelSiswa' (sesuaikan dengan nama variabel panel bawah Anda)
+            SiswaService service = new SiswaService();
+            service.tampilSiswa(jPanel4, ""); 
         }
 }

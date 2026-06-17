@@ -16,13 +16,14 @@ public class Siswa {
     private String namaLengkap;
     private String program;
     private String nomorHp;
+    private String foto;
     private int umur;
 
     public Siswa() {
     }//onstructor kosong agar bisa membuat object otomatis.
 
     public Siswa(String uidRfid, String nis, String namaLengkap,
-            String program, String nomorHp, int umur) { //membuatt objek siswaa sklaligus datanya
+            String program, String nomorHp,String foto, int umur) { //membuatt objek siswaa sklaligus datanya
 
         this.uidRfid = uidRfid;
         this.nis = nis;
@@ -30,6 +31,7 @@ public class Siswa {
         this.program = program;
         this.nomorHp = nomorHp;
         this.umur = umur;
+        this.foto = foto;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class Siswa {
                 ", namaLengkap=" + namaLengkap +
                 ", program=" + program +
                 ", nomorHp=" + nomorHp +
+                ", foto="+ foto +
                 ", umur=" + umur +
                 '}';
     }// mengubah objek mnjadi teks
@@ -82,6 +85,15 @@ public class Siswa {
 
     public void setNomorHp(String nomorHp) {
         this.nomorHp = nomorHp;
+    }
+    
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto; 
     }
 
     public int getUmur() {
