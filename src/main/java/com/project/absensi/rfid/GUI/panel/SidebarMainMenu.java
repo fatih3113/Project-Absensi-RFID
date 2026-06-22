@@ -1,11 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.project.absensi.rfid.GUI.panel;
 
 import com.project.absensi.rfid.GUI.AdminPage;
-import com.project.absensi.rfid.GUI.AttendancePage;
+import com.project.absensi.rfid.GUI.AttendancePage1;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,6 +17,10 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+/**
+ *
+ * @author ACER
+ */
 public class SidebarMainMenu extends JPanel {
 
     private final Color SIDEBAR_BG = new Color(30, 41, 59);
@@ -130,38 +130,27 @@ public class SidebarMainMenu extends JPanel {
 
                     case "Tap Kartu":
                         try {
-
                             System.out.println("STEP 1 - Klik TAPKARTU");
-
-                            AttendancePage page = new AttendancePage();
-
+                            AttendancePage1 page = new AttendancePage1();
                             System.out.println("STEP 2 - AttendancePage berhasil dibuat");
-
-                            page.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                            page.setLocationRelativeTo(null);
-                            page.setVisible(true);
-
+                            
+                            showPage(page);
                             System.out.println("STEP 3 - AttendancePage ditampilkan");
-
                         } catch (Exception ex) {
                             System.out.println("ERROR SAAT MEMBUKA ATTENDANCE");
                             ex.printStackTrace();
                         }
                         break;
 
-                    case "Products":
-                        showPage(null);
-                        break;
-
-                    case "Orders":
-                        showPage(null);
-                        break;
-
                     case "General":
-                        showPage(null);
+                        showPage(new Settings()); // Membuka panel Settings Anda
                         break;
 
                     case "Security":
+                        showPage(null);
+                        break;
+                        
+                    default:
                         showPage(null);
                         break;
                 }
@@ -174,12 +163,6 @@ public class SidebarMainMenu extends JPanel {
                 // SET NEW ACTIVE BUTTON
                 activeButton = btn;
                 btn.setBackground(ACTIVE_BG);
-                
-//                JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(SidebarMainMenu.this);
-//                if (mainFrame != null) {
-//                    mainFrame.dispose();
-//                }
-                
             });
 
             body.add(btn);
@@ -189,9 +172,7 @@ public class SidebarMainMenu extends JPanel {
         body.setVisible(false);
 
         header.addActionListener(e -> {
-
             body.setVisible(!body.isVisible());
-
             container.revalidate();
             container.repaint();
         });
@@ -203,35 +184,29 @@ public class SidebarMainMenu extends JPanel {
     }
 
     private void showPage(Component comp) {
-
-        if (comp == null) {
-            System.out.println("Component NULL");
-            return;
-        }
-
-        if (comp instanceof JPanel pnl) {
-
-            System.out.println("Menampilkan JPanel");
-
-            AdminPage.appContentPane.removeAll();
-            AdminPage.appContentPane.add(pnl, BorderLayout.CENTER);
-
-            AdminPage.appContentPane.revalidate();
-            AdminPage.appContentPane.repaint();
-
-        } else if (comp instanceof JFrame frm) {
-
-            System.out.println("Menampilkan JFrame");
-
-            frm.setExtendedState(Frame.MAXIMIZED_BOTH);
-            frm.setLocationRelativeTo(null);
-            frm.setVisible(true);
-
-        } else {
-
-            System.out.println("Tipe tidak dikenali : " + comp.getClass().getName());
-
+        switch (comp) {
+            case JPanel pnl -> {
+                AdminPage.appContentPane.removeAll();
+                AdminPage.appContentPane.add(pnl, BorderLayout.CENTER);
+                
+                AdminPage.appContentPane.revalidate();
+                AdminPage.appContentPane.repaint();
+            }
+            case JFrame frm -> { 
+                JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(SidebarMainMenu.this);
+                if (mainFrame != null) {
+                    mainFrame.dispose(); // Menutup AdminPage utama saat beralih ke halaman full screen Tap Kartu
+                }                
+                
+                frm.setExtendedState(Frame.MAXIMIZED_BOTH);
+                frm.setVisible(true);
+            }
+            default -> {
+                // Mengosongkan halaman jika melemparkan nilai null
+                AdminPage.appContentPane.removeAll();
+                AdminPage.appContentPane.revalidate();
+                AdminPage.appContentPane.repaint();
+            }
         }
     }
-
 }

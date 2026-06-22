@@ -3,7 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-package com.project.absensi.rfid.GUI;
+package com.project.absensi.rfid.GUI.backup;
+
+import com.project.absensi.rfid.GUI.HalamanDashboard;
+import com.project.absensi.rfid.GUI.backup.HalamanDataPesertaKursus;
+import com.project.absensi.rfid.GUI.backup.HalamanDataKehadiranPeserta;
 
 /**
  *
