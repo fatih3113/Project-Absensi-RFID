@@ -1,7 +1,7 @@
 package com.project.absensi.rfid.GUI.panel;
 
 import com.project.absensi.rfid.GUI.AdminPage;
-import com.project.absensi.rfid.GUI.AttendancePage1;
+import com.project.absensi.rfid.GUI.AttendancePage;
 import com.project.absensi.rfid.service.I18nService;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -162,7 +162,7 @@ public class SidebarMainMenu extends JPanel implements I18nService.I18nChangeLis
                     case "ui.sidebar.kiosk":
                         try {
                             System.out.println("STEP 1 - Klik TAPKARTU");
-                            AttendancePage1 page = new AttendancePage1();
+                            AttendancePage page = new AttendancePage();
                             System.out.println("STEP 2 - AttendancePage berhasil dibuat");
 
                             showPage(page);

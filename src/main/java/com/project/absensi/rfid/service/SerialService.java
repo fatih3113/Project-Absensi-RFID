@@ -110,7 +110,7 @@ public class SerialService {
     /**
      * Mengirimkan data ke semua handler yang terdaftar.
      */
-    private void broadcast(String data) {
+    public void broadcast(String data) {
         for (SerialDataHandler<String> handler : handlers) {
             handler.onDataReceived(data);
         }
@@ -127,5 +127,13 @@ public class SerialService {
     public boolean isConnected() {
         return activePort != null && activePort.isOpen();
     }
-    
+
+    /**
+     * Untuk simulasi data masuk tanpa perangkat serial fisik (testing/debug).
+     * @param dummyData
+     */
+    public void simulateBroadcast(String dummyData) {
+        broadcast(dummyData);
+    }
+
 }
