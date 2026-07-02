@@ -4,6 +4,7 @@
  */
 package com.project.absensi.rfid.palette;
 
+import com.project.absensi.rfid.service.I18nService;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -48,7 +49,7 @@ public class SlidingStatusToggle extends JToggleButton {
      * @param status
      */
     public void setStatusByString(String status) {
-        if ("Pulang".equalsIgnoreCase(status)) {
+        if (I18nService.get("ui.status.out").equalsIgnoreCase(status)) {
             this.setSelected(true);  // Geser ke Kanan (Pulang)
         } else {
             this.setSelected(false); // Geser ke Kiri (Masuk)
@@ -61,7 +62,7 @@ public class SlidingStatusToggle extends JToggleButton {
      * @return 
      */
     public String getStatusString() {
-        return isSelected() ? "Pulang" : "Masuk";
+        return isSelected() ? I18nService.get("ui.status.out") : I18nService.get("ui.status.in");  
     }
 
     @Override
@@ -98,7 +99,7 @@ public class SlidingStatusToggle extends JToggleButton {
         int textY = (h / 2) + (fm.getAscent() / 2) - 2; // Sumbu Y presisi di tengah vertikal
 
         // Teks Sisi Kiri -> MASUK
-        String textLeft = "Masuk";
+        String textLeft = I18nService.get("ui.status.in");
         int textLeftX = (w / 4) - (fm.stringWidth(textLeft) / 2); // Presisi tengah di area kiri
 
         // Jika aktif di kiri, teks berwarna putih terang. Jika tidak, abu-abu redup.
@@ -106,7 +107,7 @@ public class SlidingStatusToggle extends JToggleButton {
         g2.drawString(textLeft, textLeftX, textY);
 
         // Teks Sisi Kanan -> PULANG
-        String textRight = "Pulang";
+        String textRight = I18nService.get("ui.status.out");
         int textRightX = ((w / 4) * 3) - (fm.stringWidth(textRight) / 2); // Presisi tengah di area kanan
 
         // Jika aktif di kanan, teks berwarna putih terang. Jika tidak, abu-abu redup.
